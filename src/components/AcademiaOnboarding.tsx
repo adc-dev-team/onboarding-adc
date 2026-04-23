@@ -107,8 +107,15 @@ export default function AcademiaOnboarding() {
   };
 
   const joinGroup = (id: string, url: string) => {
-    setJoined((prev) => ({ ...prev, [id]: true }));
-    window.open(url, "_blank");
+    const next = { ...joined, [id]: true };
+    setJoined(next);
+    try { localStorage.setItem("adc_joined", JSON.stringify(next)); } catch {}
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    if (isIOS) {
+      window.location.href = url;
+    } else {
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
   };
 
   const allJoined = GROUPS.every((g) => joined[g.id]);
@@ -154,7 +161,20 @@ export default function AcademiaOnboarding() {
         .progress-fill {
           height: 100%;
           background: ${COLORS.orange};
-          transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+          transition: width 0.6s cubic-bezier(0.22,1,0.36,1);
+          position: relative;
+          overflow: hidden;
+        }
+        .progress-fill::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+          animation: shimmer 2.4s linear infinite;
+        }
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
         }
         .header {
           padding: 20px 24px 0;
@@ -254,16 +274,38 @@ export default function AcademiaOnboarding() {
           font-weight: 600;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          transition: background 0.15s, transform 0.1s;
+          transition: background 0.2s ease, transform 0.15s cubic-bezier(0.22,1,0.36,1), box-shadow 0.2s ease;
           margin-top: auto;
           flex-shrink: 0;
+          position: relative;
+          box-shadow: 0 0 0 0 rgba(224,140,10,0.5);
+          animation: ctaGlow 2.6s ease-in-out infinite;
+          overflow: hidden;
         }
-        .cta-btn:hover { background: ${COLORS.orangeHover}; }
-        .cta-btn:active { transform: scale(0.99); }
+        .cta-btn::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+          transition: left 0.6s cubic-bezier(0.22,1,0.36,1);
+        }
+        .cta-btn:hover { background: ${COLORS.orangeHover}; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(224,140,10,0.35); }
+        .cta-btn:hover::before { left: 100%; }
+        .cta-btn:active { transform: translateY(0) scale(0.99); }
         .cta-btn:disabled {
           background: ${COLORS.midGreen};
           color: ${COLORS.textDim};
           cursor: not-allowed;
+          animation: none;
+          box-shadow: none;
+        }
+        .cta-btn:disabled:hover { transform: none; box-shadow: none; }
+        @keyframes ctaGlow {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(224,140,10,0.35); }
+          50% { box-shadow: 0 0 0 8px rgba(224,140,10,0); }
         }
         .group-card {
           background: ${COLORS.midGreen};
@@ -541,6 +583,93 @@ export default function AcademiaOnboarding() {
         .info-box strong { color: ${COLORS.cream}; }
         .scrollable { overflow-y: auto; flex: 1; }
         .scroll-content { display: flex; flex-direction: column; }
+
+        /* Entrance animations */
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(14px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .stagger { opacity: 0; animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) forwards; }
+        .stagger-1 { animation-delay: 60ms; }
+        .stagger-2 { animation-delay: 140ms; }
+        .stagger-3 { animation-delay: 220ms; }
+        .stagger-4 { animation-delay: 300ms; }
+        .stagger-5 { animation-delay: 380ms; }
+        .stagger-6 { animation-delay: 460ms; }
+
+        /* Step 0: tight layout so CTA sits higher on mobile */
+        .step0-cta { margin-top: 8px !important; }
+
+        /* Feature tiles (step 0) */
+        .feat-tile {
+          padding: 14px 10px;
+          background: ${COLORS.midGreen};
+          border: 1px solid ${COLORS.sage};
+          transition: transform 0.25s cubic-bezier(0.22,1,0.36,1), border-color 0.2s, background 0.2s;
+          cursor: default;
+        }
+        .feat-tile:hover {
+          transform: translateY(-3px);
+          border-color: ${COLORS.orange};
+          background: rgba(224,140,10,0.08);
+        }
+        .feat-emoji {
+          font-size: 24px;
+          margin-bottom: 6px;
+          display: inline-block;
+          transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .feat-tile:hover .feat-emoji { transform: scale(1.15) rotate(-6deg); }
+
+        /* Live pulsing dot */
+        .live-dot {
+          display: inline-block;
+          width: 6px;
+          height: 6px;
+          background: ${COLORS.orange};
+          border-radius: 50%;
+          margin-right: 6px;
+          vertical-align: middle;
+          box-shadow: 0 0 0 0 rgba(224,140,10,0.7);
+          animation: liveDot 1.8s ease-in-out infinite;
+        }
+        @keyframes liveDot {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(224,140,10,0.7); }
+          50% { box-shadow: 0 0 0 6px rgba(224,140,10,0); }
+        }
+
+        /* Group card polish */
+        .group-card {
+          transition: transform 0.25s cubic-bezier(0.22,1,0.36,1), border-color 0.2s, background 0.2s, box-shadow 0.2s;
+        }
+        .group-card:not(.done):hover {
+          transform: translateY(-2px);
+          border-color: ${COLORS.lightSage};
+          box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        }
+
+        /* Logo mark subtle float */
+        .logo-mark {
+          animation: logoFloat 3s ease-in-out infinite;
+        }
+        @keyframes logoFloat {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-2px); }
+        }
+
+        /* Respect reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+          *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+          }
+          .stagger { opacity: 1 !important; }
+        }
       `}</style>
 
       <div className="wrap">
@@ -563,31 +692,37 @@ export default function AcademiaOnboarding() {
 
             {step === 0 && (
               <>
-                <div className="progress-dots">
+                <div className="progress-dots stagger stagger-1">
                   {STEPS.map((_, i) => (
                     <div key={i} className={`dot ${i === 0 ? "active" : ""}`} />
                   ))}
                 </div>
-                <div className="eyebrow">Incorporación activa</div>
-                <h1>Bienvenido,<br />{nombre}.</h1>
-                <p className="subtitle">
-                  Tu plaza está confirmada. Ahora activa todo tu acceso en 4 pasos rápidos para que puedas empezar desde hoy.
-                </p>
-                <div className="info-box">
-                  <p className="info-box-text">
-                    <strong>¿Qué vas a configurar?</strong><br />
-                    Los 3 grupos de Telegram donde viven las clases, los profesores y los avisos importantes. Sin ellos, te pierdes todo.
-                  </p>
+                <div className="eyebrow stagger stagger-1">
+                  <span className="live-dot" />Incorporación activa
                 </div>
-                <div style={{ display: "flex", gap: "20px", marginBottom: "32px" }}>
-                  {["🎓 Clases en directo", "👥 10 militares activos", "📋 Avisos oficiales"].map((item) => (
-                    <div key={item} style={{ flex: 1, textAlign: "center" }}>
-                      <div style={{ fontSize: "22px", marginBottom: "6px" }}>{item.split(" ")[0]}</div>
-                      <div style={{ fontSize: "11px", color: COLORS.textDim, lineHeight: 1.4 }}>{item.slice(3)}</div>
+                <h1 className="stagger stagger-2">Bienvenido,<br />{nombre}.</h1>
+                <p className="subtitle stagger stagger-3" style={{ marginBottom: "20px" }}>
+                  Tu plaza está confirmada. Activa tu acceso en 4 pasos rápidos para empezar hoy mismo.
+                </p>
+                <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }} className="stagger stagger-4">
+                  {[
+                    ["🎓", "Clases en directo"],
+                    ["👥", "10 militares activos"],
+                    ["📋", "Avisos oficiales"],
+                  ].map(([emoji, label]) => (
+                    <div key={label} className="feat-tile" style={{ flex: 1, textAlign: "center" }}>
+                      <div className="feat-emoji">{emoji}</div>
+                      <div style={{ fontSize: "11px", color: COLORS.textDim, lineHeight: 1.3 }}>{label}</div>
                     </div>
                   ))}
                 </div>
-                <button className="cta-btn" onClick={() => goTo(1)}>
+                <div className="info-box stagger stagger-5" style={{ marginBottom: "20px" }}>
+                  <p className="info-box-text">
+                    <strong>¿Qué vas a configurar?</strong><br />
+                    Los 3 grupos de Telegram donde viven las clases, los profesores y los avisos importantes.
+                  </p>
+                </div>
+                <button className="cta-btn step0-cta stagger stagger-6" onClick={() => goTo(1)}>
                   ACTIVAR MI ACCESO →
                 </button>
               </>
