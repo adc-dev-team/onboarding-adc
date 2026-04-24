@@ -700,7 +700,7 @@ export default function AcademiaOnboarding() {
                 <div className="eyebrow stagger stagger-1">
                   <span className="live-dot" />Incorporación activa
                 </div>
-                <h1 className="stagger stagger-2">Bienvenido,<br />{nombre}.</h1>
+                <h1 className="stagger stagger-2">Bienvenido/a,<br />{nombre}.</h1>
                 <p className="subtitle stagger stagger-3" style={{ marginBottom: "20px" }}>
                   Tu plaza está confirmada. Activa tu acceso en 4 pasos rápidos para empezar hoy mismo.
                 </p>
