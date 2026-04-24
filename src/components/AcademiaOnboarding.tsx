@@ -32,7 +32,7 @@ const GROUPS: Group[] = [
     name: "Grupo de Ejercicios",
     tag: "PSICOTÉCNICOS + CLASES EN DIRECTO",
     desc: "Aquí resuelves dudas de psicotécnicos y accedes a los enlaces de las clases en directo. Es tu sala de operaciones diaria.",
-    url: "https://t.me/+d0ihdefLpak0ZmM0",
+    url: "https://t.me/+hMnHLq8KychkNTZk",
     members: "Activo todos los días",
   },
   {
@@ -50,7 +50,7 @@ const GROUPS: Group[] = [
     name: "Tablón de Anuncios",
     tag: "AVISOS OFICIALES",
     desc: "Solo el equipo publica aquí. Cambios de horario, convocatorias, novedades importantes. Activa las notificaciones.",
-    url: "https://t.me/+hMnHLq8KychkNTZk",
+    url: "https://t.me/+d0ihdefLpak0ZmM0",
     members: "Canal oficial",
   },
 ];
