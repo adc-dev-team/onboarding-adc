@@ -1,5 +1,5 @@
-import AcademiaOnboarding from "@/components/AcademiaOnboarding";
+import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
 
 export default function Home() {
-  return <AcademiaOnboarding />;
+  return <OnboardingFlow />;
 }

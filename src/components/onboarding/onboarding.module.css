@@ -1,0 +1,854 @@
+/* Layout --------------------------------------------------------------- */
+.wrap {
+  min-height: 100dvh;
+  background: var(--color-bg);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.card {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100dvh;
+  background: var(--color-dark-green);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.noise {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.content {
+  flex: 1;
+  padding: 32px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  transition: opacity 0.28s ease, transform 0.28s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.content[data-visible="false"] {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+/* Progress bar --------------------------------------------------------- */
+.progressBar {
+  height: 3px;
+  background: var(--color-mid-green);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--color-orange);
+  transition: width 0.6s var(--ease-spring);
+  position: relative;
+  overflow: hidden;
+}
+
+.progressFill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2.4s linear infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Header --------------------------------------------------------------- */
+.header {
+  padding: 20px 24px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.logoMark {
+  width: 36px;
+  height: 36px;
+  background: var(--color-orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  animation: logoFloat 3s ease-in-out infinite;
+}
+
+@keyframes logoFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+.logoText {
+  font-family: var(--font-display), sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+}
+
+.stepIndicator {
+  margin-left: auto;
+  font-family: var(--font-display), sans-serif;
+  font-size: 12px;
+  color: var(--color-text-dim);
+  letter-spacing: 0.1em;
+}
+
+/* Typography ----------------------------------------------------------- */
+.eyebrow {
+  font-family: var(--font-display), sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--color-orange);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.h1 {
+  font-family: var(--font-display), sans-serif;
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--color-cream);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin: 0 0 16px;
+}
+
+.h2 {
+  font-family: var(--font-display), sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-cream);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+}
+
+.subtitle {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--color-text-dim);
+  line-height: 1.6;
+  margin: 0 0 32px;
+}
+
+/* CTA ------------------------------------------------------------------ */
+.cta {
+  width: 100%;
+  padding: 18px 24px;
+  background: var(--color-orange);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-display), sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background 0.2s ease, transform 0.15s var(--ease-spring),
+    box-shadow 0.2s ease;
+  margin-top: auto;
+  flex-shrink: 0;
+  position: relative;
+  animation: ctaGlow 2.6s ease-in-out infinite;
+  overflow: hidden;
+}
+
+.cta::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.6s var(--ease-spring);
+}
+
+.cta:hover {
+  background: var(--color-orange-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(224, 140, 10, 0.35);
+}
+
+.cta:hover::before {
+  left: 100%;
+}
+
+.cta:active {
+  transform: translateY(0) scale(0.99);
+}
+
+.cta:disabled {
+  background: var(--color-mid-green);
+  color: var(--color-text-dim);
+  cursor: not-allowed;
+  animation: none;
+  box-shadow: none;
+}
+
+.cta:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.cta:focus-visible {
+  outline: 2px solid var(--color-cream);
+  outline-offset: 3px;
+}
+
+.ctaTight {
+  margin-top: 8px;
+}
+
+.ctaGhost {
+  background: transparent;
+  border: 1px solid var(--color-sage);
+  color: var(--color-text-dim);
+  animation: none;
+  margin-top: 0;
+}
+
+.ctaGhost:hover {
+  background: rgba(90, 107, 58, 0.2);
+  color: var(--color-cream);
+  box-shadow: none;
+}
+
+@keyframes ctaGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(224, 140, 10, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(224, 140, 10, 0);
+  }
+}
+
+/* Progress dots -------------------------------------------------------- */
+.progressDots {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.dot {
+  width: 28px;
+  height: 3px;
+  background: var(--color-mid-green);
+  transition: background 0.3s, width 0.3s;
+}
+
+.dotActive {
+  background: var(--color-orange);
+  width: 40px;
+}
+
+.dotDone {
+  background: var(--color-light-sage);
+}
+
+/* Info box ------------------------------------------------------------- */
+.infoBox {
+  background: rgba(90, 107, 58, 0.25);
+  border-left: 3px solid var(--color-orange);
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+
+.infoBoxText {
+  font-size: 13px;
+  color: var(--color-text-dim);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.infoBoxText strong {
+  color: var(--color-cream);
+}
+
+/* Feature tiles (step 0) ----------------------------------------------- */
+.featureGrid {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.featureTile {
+  flex: 1;
+  text-align: center;
+  padding: 14px 10px;
+  background: var(--color-mid-green);
+  border: 1px solid var(--color-sage);
+  transition: transform 0.25s var(--ease-spring), border-color 0.2s,
+    background 0.2s;
+}
+
+.featureTile:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-orange);
+  background: rgba(224, 140, 10, 0.08);
+}
+
+.featureEmoji {
+  font-size: 24px;
+  margin-bottom: 6px;
+  display: inline-block;
+  transition: transform 0.3s var(--ease-pop);
+}
+
+.featureTile:hover .featureEmoji {
+  transform: scale(1.15) rotate(-6deg);
+}
+
+.featureLabel {
+  font-size: 11px;
+  color: var(--color-text-dim);
+  line-height: 1.3;
+}
+
+/* Live dot ------------------------------------------------------------- */
+.liveDot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--color-orange);
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+  box-shadow: 0 0 0 0 rgba(224, 140, 10, 0.7);
+  animation: liveDot 1.8s ease-in-out infinite;
+}
+
+@keyframes liveDot {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(224, 140, 10, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(224, 140, 10, 0);
+  }
+}
+
+/* Group cards ---------------------------------------------------------- */
+.groupsList {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.groupCard {
+  background: var(--color-mid-green);
+  border: 1px solid var(--color-sage);
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: transform 0.25s var(--ease-spring), border-color 0.2s,
+    background 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+
+.groupCard:not(.groupCardDone):hover {
+  transform: translateY(-2px);
+  border-color: var(--color-light-sage);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.groupCardDone {
+  border-color: var(--color-orange);
+  background: var(--color-orange-light);
+}
+
+.groupCardTop {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.groupEmoji {
+  font-size: 24px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.groupMeta {
+  flex: 1;
+}
+
+.groupTag {
+  font-family: var(--font-display), sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--color-orange);
+  margin-bottom: 3px;
+}
+
+.groupName {
+  font-family: var(--font-display), sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-cream);
+  line-height: 1.1;
+}
+
+.groupMembers {
+  font-size: 11px;
+  color: var(--color-text-dim);
+  margin-top: 2px;
+}
+
+.groupDoneBadge {
+  width: 24px;
+  height: 24px;
+  background: var(--color-orange);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #fff;
+}
+
+.groupDesc {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--color-text-dim);
+  line-height: 1.55;
+  margin-bottom: 12px;
+}
+
+.joinBtn {
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid var(--color-orange);
+  color: var(--color-orange);
+  font-family: var(--font-display), sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.joinBtn:hover {
+  background: var(--color-orange);
+  color: #fff;
+}
+
+.joinBtnDone {
+  border-color: var(--color-sage);
+  color: var(--color-text-dim);
+  background: transparent;
+  cursor: default;
+}
+
+.joinBtnDone:hover {
+  background: transparent;
+  color: var(--color-text-dim);
+}
+
+.groupsCounter {
+  margin-top: 16px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: var(--color-text-dim);
+  text-align: center;
+}
+
+/* Check row (confirmation toggle) -------------------------------------- */
+.checkRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px;
+  background: var(--color-mid-green);
+  border: 1px solid var(--color-sage);
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  width: 100%;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+}
+
+.checkRow:hover {
+  border-color: var(--color-light-sage);
+}
+
+.checkRow:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 2px;
+}
+
+.checkRowChecked {
+  border-color: var(--color-orange);
+  background: var(--color-orange-light);
+}
+
+.checkBox {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--color-sage);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: border-color 0.2s, background 0.2s;
+  color: #fff;
+  font-size: 14px;
+}
+
+.checkBoxChecked {
+  border-color: var(--color-orange);
+  background: var(--color-orange);
+}
+
+.checkLabel {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-cream);
+  line-height: 1.5;
+}
+
+.checkSub {
+  font-size: 12px;
+  color: var(--color-text-dim);
+  margin-top: 3px;
+}
+
+/* Step list (telegram name instructions) ------------------------------- */
+.stepList {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 28px;
+}
+
+.stepRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--color-mid-green);
+}
+
+.stepRow:last-child {
+  border-bottom: none;
+}
+
+.stepNum {
+  width: 28px;
+  height: 28px;
+  background: var(--color-sage);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display), sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-cream);
+  flex-shrink: 0;
+}
+
+.stepText {
+  font-size: 14px;
+  color: var(--color-cream);
+  line-height: 1.5;
+}
+
+.stepDetail {
+  font-size: 12px;
+  color: var(--color-text-dim);
+  margin-top: 3px;
+}
+
+/* Video --------------------------------------------------------------- */
+.videoWrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  background: var(--color-mid-green);
+  margin-bottom: 20px;
+  border: 1px solid var(--color-sage);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.videoWrapper iframe,
+.videoWrapper img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  object-fit: cover;
+}
+
+.videoPlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+  transition: background 0.2s;
+}
+
+.videoPlay:hover {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.videoPlayIcon {
+  width: 68px;
+  height: 48px;
+  background: var(--color-orange);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 24px;
+  transition: transform 0.2s;
+}
+
+.videoPlay:hover .videoPlayIcon {
+  transform: scale(1.08);
+}
+
+.videoLabel {
+  font-size: 12px;
+  color: var(--color-text-dim);
+  text-align: center;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+/* Completion step ------------------------------------------------------ */
+.completionHero {
+  text-align: center;
+  padding: 20px 0 28px;
+}
+
+.medal {
+  font-size: 64px;
+  line-height: 1;
+  margin-bottom: 16px;
+  display: block;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.badge {
+  display: inline-block;
+  padding: 5px 14px;
+  background: var(--color-orange-light);
+  border: 1px solid var(--color-orange);
+  font-family: var(--font-display), sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--color-orange);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.timeline {
+  margin-bottom: 28px;
+}
+
+.tlItem {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  align-items: flex-start;
+}
+
+.tlDot {
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--color-orange);
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+  position: relative;
+}
+
+.tlDot::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 10px;
+  width: 1px;
+  height: 30px;
+  background: var(--color-sage);
+}
+
+.tlItem:last-child .tlDot::after {
+  display: none;
+}
+
+.tlTitle {
+  font-family: var(--font-display), sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-cream);
+}
+
+.tlDesc {
+  font-size: 13px;
+  color: var(--color-text-dim);
+  margin-top: 2px;
+}
+
+.daniCard {
+  background: var(--color-mid-green);
+  border: 1px solid var(--color-sage);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.daniAvatar {
+  width: 44px;
+  height: 44px;
+  background: var(--color-orange);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.daniName {
+  font-family: var(--font-display), sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-cream);
+}
+
+.daniRole {
+  font-size: 12px;
+  color: var(--color-text-dim);
+}
+
+.daniNote {
+  font-size: 13px;
+  color: var(--color-text-dim);
+  margin-top: 4px;
+}
+
+/* Entrance animations -------------------------------------------------- */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stagger {
+  opacity: 0;
+  animation: fadeUp 0.7s var(--ease-spring) forwards;
+}
+
+.stagger1 {
+  animation-delay: 60ms;
+}
+.stagger2 {
+  animation-delay: 140ms;
+}
+.stagger3 {
+  animation-delay: 220ms;
+}
+.stagger4 {
+  animation-delay: 300ms;
+}
+.stagger5 {
+  animation-delay: 380ms;
+}
+.stagger6 {
+  animation-delay: 460ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stagger {
+    opacity: 1;
+  }
+}
+
+/* Screen-reader only --------------------------------------------------- */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
