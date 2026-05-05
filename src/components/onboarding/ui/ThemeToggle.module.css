@@ -1,16 +1,21 @@
-/* Botón flotante de tema — esquina superior derecha del card.
+/* Botón flotante de tema — esquina superior derecha del card,
+ * pero POR DEBAJO de la línea del header.
  *
  * Posición absoluta dentro de `.card` (que tiene position:relative
- * en `onboarding.module.css`). De esta manera el toggle queda
- * dentro del recorte del card y no se sale en pantallas grandes
- * — el card es 430px max y el toggle vive pegado a su esquina.
+ * en `onboarding.module.css`). El header del onboarding ocupa
+ * ~56px (padding-top 20 + logo 36) y aloja el indicador "X/Y" en
+ * la esquina derecha — si el toggle se sitúa en `top: 14px` se
+ * solapa con ese indicador. Bajándolo a 72px lo dejamos en el
+ * "respiro" entre el header y el contenido del paso, donde no
+ * pisa nada y sigue siendo el primer punto al que el ojo
+ * gravita en la esquina superior.
  *
  * En móvil, top/right reducidos para que no robe espacio al
- * header pero siga siendo cómodo de pulsar (target ≥36px).
+ * contenido pero siga siendo cómodo de pulsar (target ≥32px).
  */
 .toggle {
   position: absolute;
-  top: 14px;
+  top: 72px;
   right: 14px;
   z-index: 10;
 
@@ -58,7 +63,7 @@
 
 @media (max-width: 480px) {
   .toggle {
-    top: 12px;
+    top: 64px;
     right: 12px;
     width: 32px;
     height: 32px;
