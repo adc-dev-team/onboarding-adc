@@ -9,9 +9,16 @@
   --color-light-sage: #8a9a68;
   --color-cream: #f0ece0;
   --color-warm-white: #faf8f3;
-  --color-orange: #e08c0a;
-  --color-orange-hover: #c97d09;
-  --color-orange-light: rgba(224, 140, 10, 0.15);
+  /* Accent — alineado con `--ui-accent` del frontend principal
+   * (`adc-frontend-v2/src/styles/globals.css`). El onboarding vive
+   * en tema oscuro permanente, así que tomamos los valores del
+   * dark theme del frontend (#9dbb5a) en lugar del light (#689f38)
+   * para que destaque sobre el fondo verde militar. La variante
+   * `-light` es el mismo color a 15% de alpha — equivalente al
+   * `--ui-accent-soft` del frontend. */
+  --color-accent: #9dbb5a;
+  --color-accent-hover: #b5d474;
+  --color-accent-light: rgba(157, 187, 90, 0.15);
   --color-text-dim: #a8b890;
 
   /* Motion */

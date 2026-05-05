@@ -1,4 +1,5 @@
 import { PLATFORM_URL } from "@/lib/onboarding-data";
+import { useComercial } from "@/hooks/useComercial";
 import { CtaButton } from "../ui/CtaButton";
 import styles from "../onboarding.module.css";
 
@@ -25,6 +26,11 @@ const TIMELINE: ReadonlyArray<TimelineEntry> = [
 ];
 
 export function CompletionStep({ name, onRestart }: CompletionStepProps) {
+  // Nombre del comercial — viene de `?comercial=` en la URL del
+  // email de inscripción (e.g. `/?comercial=Sergio`). Default
+  // "Dani" si no se pasa, manteniendo el comportamiento previo.
+  const comercial = useComercial();
+
   const goToPlatform = () => {
     if (typeof window !== "undefined") {
       window.open(PLATFORM_URL, "_blank", "noopener,noreferrer");
@@ -65,7 +71,7 @@ export function CompletionStep({ name, onRestart }: CompletionStepProps) {
           👨‍💼
         </div>
         <div>
-          <div className={styles.daniName}>Dani</div>
+          <div className={styles.daniName}>{comercial}</div>
           <div className={styles.daniRole}>Tu punto de contacto directo</div>
           <div className={styles.daniNote}>
             Cualquier duda, escríbeme por WhatsApp
