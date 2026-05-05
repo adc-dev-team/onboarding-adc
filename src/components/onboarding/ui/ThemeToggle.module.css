@@ -1,0 +1,66 @@
+/* Botón flotante de tema — esquina superior derecha del card.
+ *
+ * Posición absoluta dentro de `.card` (que tiene position:relative
+ * en `onboarding.module.css`). De esta manera el toggle queda
+ * dentro del recorte del card y no se sale en pantallas grandes
+ * — el card es 430px max y el toggle vive pegado a su esquina.
+ *
+ * En móvil, top/right reducidos para que no robe espacio al
+ * header pero siga siendo cómodo de pulsar (target ≥36px).
+ */
+.toggle {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+  padding: 0;
+
+  background: var(--ui-surface-2);
+  border: 1px solid var(--ui-border);
+  border-radius: 50%;
+  color: var(--ui-text-muted);
+
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.15s var(--ease-spring);
+
+  /* Sutil opacidad inicial para no robar atención. Al hacer
+   * hover/focus se vuelve totalmente opaco. */
+  opacity: 0.75;
+}
+
+.toggle:hover,
+.toggle:focus-visible {
+  opacity: 1;
+  color: var(--ui-accent);
+  border-color: var(--ui-accent);
+  transform: scale(1.06);
+}
+
+.toggle:focus-visible {
+  outline: 2px solid var(--ui-accent);
+  outline-offset: 2px;
+}
+
+.toggle:active {
+  transform: scale(0.94);
+}
+
+@media (max-width: 480px) {
+  .toggle {
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+  }
+}

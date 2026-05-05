@@ -10,6 +10,7 @@ import { useName } from "@/hooks/useName";
 
 import { Header } from "./ui/Header";
 import { ProgressBar } from "./ui/ProgressBar";
+import { ThemeToggle } from "./ui/ThemeToggle";
 import { WelcomeStep } from "./steps/WelcomeStep";
 import { GroupsStep } from "./steps/GroupsStep";
 import { TelegramNameStep } from "./steps/TelegramNameStep";
@@ -81,6 +82,7 @@ export function OnboardingFlow() {
     <div className={styles.wrap}>
       <div className={styles.card}>
         <div className={styles.noise} aria-hidden="true" />
+        <ThemeToggle />
 
         <ProgressBar value={progress} />
         <Header stepNumber={stepNumber} totalSteps={ACTIONABLE_STEPS} />

@@ -208,7 +208,7 @@
 .cta:hover {
   background: var(--color-accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(224, 140, 10, 0.35);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--color-accent) 35%, transparent);
 }
 
 .cta:hover::before {
@@ -250,7 +250,7 @@
 }
 
 .ctaGhost:hover {
-  background: rgba(90, 107, 58, 0.2);
+  background: color-mix(in srgb, var(--color-sage) 30%, transparent);
   color: var(--color-cream);
   box-shadow: none;
 }
@@ -258,10 +258,10 @@
 @keyframes ctaGlow {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(224, 140, 10, 0.35);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 35%, transparent);
   }
   50% {
-    box-shadow: 0 0 0 8px rgba(224, 140, 10, 0);
+    box-shadow: 0 0 0 8px color-mix(in srgb, var(--color-accent) 0%, transparent);
   }
 }
 
@@ -291,7 +291,7 @@
 
 /* Info box ------------------------------------------------------------- */
 .infoBox {
-  background: rgba(90, 107, 58, 0.25);
+  background: var(--color-accent-light);
   border-left: 3px solid var(--color-accent);
   padding: 14px 16px;
   margin-bottom: 20px;
@@ -328,7 +328,7 @@
 .featureTile:hover {
   transform: translateY(-3px);
   border-color: var(--color-accent);
-  background: rgba(224, 140, 10, 0.08);
+  background: var(--color-accent-light);
 }
 
 .featureEmoji {
@@ -357,17 +357,17 @@
   border-radius: 50%;
   margin-right: 6px;
   vertical-align: middle;
-  box-shadow: 0 0 0 0 rgba(224, 140, 10, 0.7);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 70%, transparent);
   animation: liveDot 1.8s ease-in-out infinite;
 }
 
 @keyframes liveDot {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(224, 140, 10, 0.7);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 70%, transparent);
   }
   50% {
-    box-shadow: 0 0 0 6px rgba(224, 140, 10, 0);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-accent) 0%, transparent);
   }
 }
 
@@ -571,7 +571,24 @@
 .stepList {
   display: flex;
   flex-direction: column;
-  margin-bottom: 28px;
+  /* Antes 28px — el `.confirmDivider` añade su propio respiro
+   * debajo, así que aquí sólo dejamos un colchón ligero. */
+  margin-bottom: 8px;
+}
+
+/* Separador entre las instrucciones y la confirmación ------------------
+ * Con sólo `margin-bottom: 28px` en `.stepList`, la fila de
+ * instrucciones (último paso) quedaba pegada visualmente al
+ * `CheckRow` de "Ya he cambiado mi nombre en Telegram" — ambos
+ * son texto similar y el ojo no encontraba la frontera entre
+ * "qué hacer" y "confírmalo". Esta línea fina + el margen
+ * generoso marcan claramente el corte entre las dos secciones.
+ */
+.confirmDivider {
+  height: 1px;
+  background: var(--color-sage);
+  opacity: 0.6;
+  margin: 0 0 24px;
 }
 
 .stepRow {

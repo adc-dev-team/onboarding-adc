@@ -58,6 +58,12 @@ export function TelegramNameStep({
         ))}
       </ol>
 
+      {/* Separador — sin esto la última fila de instrucciones se
+          confunde visualmente con la fila de confirmación de
+          abajo. El divisor + el margen marcan el corte entre
+          "instrucciones" y "confírmalo". */}
+      <div className={styles.confirmDivider} aria-hidden="true" />
+
       <CheckRow
         checked={confirmed}
         onToggle={onToggleConfirmed}

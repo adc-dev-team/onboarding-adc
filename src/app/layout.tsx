@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Oswald } from "next/font/google";
 
+import { ThemeProvider } from "@/providers/ThemeProvider";
+
 import "./globals.css";
 
 /**
@@ -51,7 +53,12 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1e2410",
+  // Dos valores para que el navegador escoja según el tema activo
+  // del sistema/usuario. Coinciden con `--ui-bg` de cada theme.
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0c0c0c" },
+  ],
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -66,8 +73,11 @@ export default function RootLayout({
     <html
       lang="es"
       className={`${oswald.variable} ${dmSans.variable}`}
+      suppressHydrationWarning
     >
-      <body>{children}</body>
+      <body>
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }

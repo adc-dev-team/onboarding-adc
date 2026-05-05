@@ -1,29 +1,91 @@
 @import "tailwindcss";
 
-:root {
-  /* Brand palette */
-  --color-bg: #1e2410;
-  --color-dark-green: #2a3118;
-  --color-mid-green: #3d4a25;
-  --color-sage: #5c6b3a;
-  --color-light-sage: #8a9a68;
-  --color-cream: #f0ece0;
-  --color-warm-white: #faf8f3;
-  /* Accent — alineado con `--ui-accent` del frontend principal
-   * (`adc-frontend-v2/src/styles/globals.css`). El onboarding vive
-   * en tema oscuro permanente, así que tomamos los valores del
-   * dark theme del frontend (#9dbb5a) en lugar del light (#689f38)
-   * para que destaque sobre el fondo verde militar. La variante
-   * `-light` es el mismo color a 15% de alpha — equivalente al
-   * `--ui-accent-soft` del frontend. */
-  --color-accent: #9dbb5a;
-  --color-accent-hover: #b5d474;
-  --color-accent-light: rgba(157, 187, 90, 0.15);
-  --color-text-dim: #a8b890;
+/* =========================================================
+   THEME TOKENS — alineados con `adc-frontend-v2/src/styles/globals.css`.
 
-  /* Motion */
+   `:root` define el tema light (default). `[data-theme="dark"]`
+   sobrescribe con los mismos valores que el frontend principal —
+   onboarding y plataforma deben verse idénticos cuando el alumno
+   transita entre ambos. `next-themes` se encarga de poner el
+   atributo en <html>.
+
+   Los tokens `--color-*` que ya usa `onboarding.module.css` se
+   mantienen como ALIAS de los `--ui-*` para no tener que renombrar
+   las ~30 referencias del CSS módulo. Cuando el tema cambia, los
+   `--ui-*` cambian y los `--color-*` les siguen automáticamente.
+   ========================================================= */
+
+:root {
+  /* === Surfaces === */
+  --ui-bg: #ffffff;
+  --ui-bg-muted: #f4f7f6;
+  --ui-surface: #2b3526;
+  --ui-surface-2: #f0f0f0;
+  --ui-border: #e5e5e5;
+  --ui-border-accent: #c8ebaa;
+
+  /* === Text === */
+  --ui-text: #1a1a1a;
+  --ui-text-muted: #6b7280;
+  --ui-text-on-accent: #ffffff;
+
+  /* === Accent (verde tropa, mismo que ui-accent del frontend) === */
+  --ui-accent: #689f38;
+  --ui-accent-hover: #608125;
+  --ui-accent-soft: rgba(134, 171, 55, 0.15);
+
+  /* === Shadows === */
+  --ui-shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.08);
+  --ui-shadow-md: 0 6px 18px rgba(0, 0, 0, 0.12);
+
+  /* === Aliases legacy ===
+   * El CSS módulo se escribió antes de unificar tokens con el
+   * frontend principal. Estos alias mantienen los nombres
+   * originales apuntando a los `--ui-*` para que el módulo no
+   * tenga que renombrarse. */
+  --color-bg: var(--ui-bg);
+  --color-dark-green: var(--ui-bg-muted);
+  --color-mid-green: var(--ui-surface-2);
+  --color-sage: var(--ui-border);
+  --color-light-sage: var(--ui-border-accent);
+  --color-cream: var(--ui-text);
+  --color-warm-white: var(--ui-text);
+  --color-text-dim: var(--ui-text-muted);
+  --color-accent: var(--ui-accent);
+  --color-accent-hover: var(--ui-accent-hover);
+  --color-accent-light: var(--ui-accent-soft);
+
+  /* === Motion === */
   --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  color-scheme: light;
+}
+
+/* =========================================================
+   DARK THEME
+   Mismos valores que `html[data-theme="dark"]` del frontend
+   principal — paridad visual entre onboarding y plataforma.
+   ========================================================= */
+html[data-theme="dark"] {
+  --ui-bg: #0c0c0c;
+  --ui-bg-muted: #141414;
+  --ui-surface: #191919;
+  --ui-surface-2: #1f1f1f;
+  --ui-border: #2a2a2a;
+  --ui-border-accent: #355a1f;
+
+  --ui-text: #f5f5f5;
+  --ui-text-muted: #a1a1a1;
+
+  --ui-accent: #9dbb5a;
+  --ui-accent-hover: #b5d474;
+  --ui-accent-soft: rgba(157, 187, 90, 0.15);
+
+  --ui-shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.6);
+  --ui-shadow-md: 0 6px 18px rgba(0, 0, 0, 0.7);
+
+  color-scheme: dark;
 }
 
 *,
@@ -36,11 +98,12 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: var(--color-bg);
-  color: var(--color-cream);
+  background: var(--ui-bg);
+  color: var(--ui-text);
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
