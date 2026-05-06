@@ -1,7 +1,7 @@
 /**
  * Static onboarding configuration.
  *
- * Telegram URLs, YouTube tutorial ID and the platform URL come from public
+ * Telegram URLs, Vimeo tutorial ID and the platform URL come from public
  * env vars (NEXT_PUBLIC_*) so they can be rotated without a code change.
  * Hardcoded fallbacks keep the flow working when env is missing.
  */
@@ -18,12 +18,12 @@ const env = {
     "https://t.me/+d0ihdefLpak0ZmM0",
   platform:
     process.env.NEXT_PUBLIC_PLATFORM_URL ?? "https://academiadecombate.com",
-  tutorialYoutubeId:
-    process.env.NEXT_PUBLIC_TUTORIAL_YOUTUBE_ID ?? "0KI767I2JTE",
+  tutorialVimeoId:
+    process.env.NEXT_PUBLIC_TUTORIAL_VIMEO_ID ?? "1189669235",
 } as const;
 
 export const PLATFORM_URL = env.platform;
-export const TUTORIAL_YOUTUBE_ID = env.tutorialYoutubeId;
+export const TUTORIAL_VIMEO_ID = env.tutorialVimeoId;
 
 export type GroupId = "ejercicios" | "general" | "tablon";
 

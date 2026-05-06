@@ -1,28 +1,58 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../onboarding.module.css";
 
 type VideoEmbedProps = {
-  youtubeId: string;
+  vimeoId: string;
   title: string;
 };
 
 /**
- * Lazy YouTube facade: show a static thumbnail with a play button until
- * the user clicks it. The real (no-cookie) iframe only mounts on demand,
- * which avoids a ~1MB network cost on first paint and keeps Google from
- * receiving a page-view until the user asks to watch.
+ * Lazy Vimeo facade: muestra el poster del vídeo con un botón de play
+ * hasta que el usuario hace click. El iframe real solo se monta a
+ * demanda — así Vimeo no recibe pageview ni cargamos el JS del player
+ * (~150 KB) en el primer paint.
+ *
+ * Además pasamos `dnt=1` ("do not track") al iframe para que Vimeo no
+ * setee cookies de sesión cuando el alumno por fin lo abra.
+ *
+ * El thumbnail viene de la API oEmbed pública de Vimeo (un fetch JSON
+ * al montar). Si esa llamada falla — sin red, AdBlock, lo que sea —
+ * el wrapper se queda con su fondo CSS y solo el botón de play
+ * visible: el flujo no se rompe.
  */
-export function VideoEmbed({ youtubeId, title }: VideoEmbedProps) {
+export function VideoEmbed({ vimeoId, title }: VideoEmbedProps) {
   const [loaded, setLoaded] = useState(false);
+  const [thumbUrl, setThumbUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch(
+      `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(
+        `https://vimeo.com/${vimeoId}`,
+      )}`,
+    )
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: { thumbnail_url?: string } | null) => {
+        if (!cancelled && data?.thumbnail_url) {
+          setThumbUrl(data.thumbnail_url);
+        }
+      })
+      .catch(() => {
+        // Sin thumbnail: el wrapper sigue funcionando con su fondo CSS.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [vimeoId]);
 
   if (loaded) {
     return (
       <div className={styles.videoWrapper}>
         <iframe
-          src={`https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&rel=0`}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          src={`https://player.vimeo.com/video/${vimeoId}?autoplay=1&dnt=1`}
+          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
           allowFullScreen
           title={title}
         />
@@ -32,12 +62,10 @@ export function VideoEmbed({ youtubeId, title }: VideoEmbedProps) {
 
   return (
     <div className={styles.videoWrapper}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={`https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`}
-        alt=""
-        loading="lazy"
-      />
+      {thumbUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={thumbUrl} alt="" loading="lazy" />
+      )}
       <button
         type="button"
         className={styles.videoPlay}

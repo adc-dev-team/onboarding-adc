@@ -1,4 +1,4 @@
-import { TUTORIAL_YOUTUBE_ID } from "@/lib/onboarding-data";
+import { TUTORIAL_VIMEO_ID } from "@/lib/onboarding-data";
 import { ProgressDots } from "../ui/ProgressDots";
 import { CtaButton } from "../ui/CtaButton";
 import { CheckRow } from "../ui/CheckRow";
@@ -33,7 +33,7 @@ export function TutorialStep({
       </p>
 
       <VideoEmbed
-        youtubeId={TUTORIAL_YOUTUBE_ID}
+        vimeoId={TUTORIAL_VIMEO_ID}
         title="Tutorial oficial — Academia de Combate"
       />
       <p className={styles.videoLabel}>
