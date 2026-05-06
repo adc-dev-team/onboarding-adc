@@ -27,8 +27,9 @@ const TIMELINE: ReadonlyArray<TimelineEntry> = [
 
 export function CompletionStep({ name, onRestart }: CompletionStepProps) {
   // Nombre del comercial — viene de `?comercial=` en la URL del
-  // email de inscripción (e.g. `/?comercial=Sergio`). Default
-  // "Dani" si no se pasa, manteniendo el comportamiento previo.
+  // email de inscripción (ej. `/?comercial=Sergio`). Si no llega
+  // por URL, `useComercial` devuelve `null` y la tarjeta no se
+  // renderiza — sin default hardcoded.
   const comercial = useComercial();
 
   const goToPlatform = () => {
@@ -66,18 +67,22 @@ export function CompletionStep({ name, onRestart }: CompletionStepProps) {
         ))}
       </ol>
 
-      <aside className={styles.daniCard}>
-        <div className={styles.daniAvatar} aria-hidden="true">
-          👨‍💼
-        </div>
-        <div>
-          <div className={styles.daniName}>{comercial}</div>
-          <div className={styles.daniRole}>Tu punto de contacto directo</div>
-          <div className={styles.daniNote}>
-            Cualquier duda, escríbeme por WhatsApp
+      {comercial && (
+        <aside className={styles.daniCard}>
+          <div className={styles.daniAvatar} aria-hidden="true">
+            👨‍💼
           </div>
-        </div>
-      </aside>
+          <div>
+            <div className={styles.daniName}>{comercial}</div>
+            <div className={styles.daniRole}>
+              Tu punto de contacto directo
+            </div>
+            <div className={styles.daniNote}>
+              Cualquier duda, escríbeme por WhatsApp
+            </div>
+          </div>
+        </aside>
+      )}
 
       <CtaButton
         onClick={goToPlatform}
